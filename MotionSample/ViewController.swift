@@ -24,8 +24,8 @@ class ViewController: UIViewController {
         
         if self.motionManager.isAccelerometerAvailable {
             self.motionManager.accelerometerUpdateInterval = 0.1
-            self.motionManager.startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { (data, error) in
-                guard let data = data else { return }
+            self.motionManager.startAccelerometerUpdates(to: OperationQueue.current!, withHandler: { [weak self] (data, error) in
+                guard let `self` = self, let data = data else { return }
                 self.xLabel.text = "\(data.acceleration.x)"
                 self.yLabel.text = "\(data.acceleration.y)"
                 self.zLabel.text = "\(data.acceleration.z)"
