@@ -16,6 +16,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var yLabel: UILabel!
     @IBOutlet weak var zLabel: UILabel!
     
+    @IBOutlet weak var gyroXLabel: UILabel!
+    @IBOutlet weak var gyroYLabel: UILabel!
+    @IBOutlet weak var gyroZLabel: UILabel!
+    
     private let motionManager = CMMotionManager()
     
     override func viewDidLoad() {
@@ -32,6 +36,16 @@ class ViewController: UIViewController {
             })
         } else {
             self.xLabel.text = "Not Supported"
+        }
+        
+        if self.motionManager.isGyroAvailable {
+            self.motionManager.gyroUpdateInterval = 0.1
+            self.motionManager.startGyroUpdates(to: OperationQueue.current!, withHandler: { [weak self] (data, error) in
+                guard let `self` = self, let data = data else { return }
+                self.gyroXLabel.text = "\(data.rotationRate.x)"
+                self.gyroYLabel.text = "\(data.rotationRate.y)"
+                self.gyroZLabel.text = "\(data.rotationRate.z)"
+            })
         }
     }
 
